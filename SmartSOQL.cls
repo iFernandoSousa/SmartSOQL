@@ -552,6 +552,12 @@ public class SmartSOQL {
 
 		return this;
 	}
+	
+	public SmartSOQL withDeletedRows() {
+		query += ' ALL ROWS';
+
+		return this;
+	}
 
 	/*
 	* get the String OrderBy syntax
