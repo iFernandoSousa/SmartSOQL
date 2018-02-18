@@ -512,14 +512,15 @@ public class SmartSOQLTest {
 				.withFields(new SObjectField[] {Contact.Id,
 		                                        Contact.Name})
 				.equalTo(Contact.Birthdate, value)
+				.withDeletedRows()
 				.findAll();
 
-		system.assertEquals(result.size(), [SELECT COUNT() FROM Contact WHERE Birthdate = :value]);
+		system.assertEquals(result.size(), [SELECT COUNT() FROM Contact WHERE Birthdate = :value ALL ROWS]);
 	}
 
 	@IsTest
 	static void withIn() {
-		String[] lista = new String[] {'Standard','Guest','CsnOnly'};
+		String[] lista = new String[] {'Standard', 'Guest', 'CsnOnly'};
 
 		List<sObject> query = new SmartSOQL()
 				.fromObject(Profile.sObjectType)
@@ -533,7 +534,7 @@ public class SmartSOQLTest {
 
 	@IsTest
 	static void withInLista() {
-		String[] lista = new String[] {'Standard','Guest','CsnOnly'};
+		String[] lista = new String[] {'Standard', 'Guest', 'CsnOnly'};
 
 		List<sObject> query = new SmartSOQL()
 				.fromObject(Profile.sObjectType)
