@@ -545,4 +545,18 @@ public class SmartSOQLTest {
 
 		system.assertEquals(query.size(), [SELECT Count() FROM Profile WHERE UserType in :lista]);
 	}
+
+	@IsTest
+	static void greaterThanOrEqualTo() {
+		Integer startValue = 0;
+
+		List<sObject> query = new SmartSOQL()
+				.fromObject(AppMenuItem.sObjectType)
+				.withFields(new SObjectField[] {AppMenuItem.Id,
+		                                        AppMenuItem.Name})
+				.greaterThanOrEqualTo(AppMenuItem.SortOrder, startValue)
+				.findAll();
+
+		system.assert(query.size() > 0);
+	}
 }
