@@ -459,22 +459,276 @@ public class SmartSOQL {
 		return this;
 	}
 
-	public SmartSOQL greaterThan() {
-		system.debug('');
-		return null;
+	public SmartSOQL greaterThan(SObjectField field, Double value) {
+		return greaterThan(field.getDescribe().getName(), (Decimal)value);
 	}
 
-	public SmartSOQL lessThan() {
-		system.debug('');
-		return null;
+	public SmartSOQL greaterThan(SObjectField field, Decimal value) {
+		return greaterThan(field.getDescribe().getName(), value);
 	}
 
-	public SmartSOQL greaterThanOrEqualTo() {
-		return null;
+	public SmartSOQL greaterThan(String field, Double value) {
+		return greaterThan(field, (Decimal)value);
 	}
 
-	public SmartSOQL lessThanOrEqualTo() {
-		return null;
+	public SmartSOQL greaterThan(String field, Decimal value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' > ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL greaterThan(SObjectField field, Integer value) {
+		return greaterThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThan(String field, Integer value) {
+		return greaterThan(field, (Long)value);
+	}
+
+	public SmartSOQL greaterThan(SObjectField field, Long value) {
+		return greaterThan(field.getDescribe().getName(), (Decimal)value);
+	}
+
+	public SmartSOQL greaterThan(String field, Long value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' > ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL greaterThan(SObjectField field, Date value) {
+		return greaterThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThan(String field, Date value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' > ';
+		query += ((Datetime)value).formatGMT('yyyy-MM-dd');
+
+		return this;
+	}
+
+	public SmartSOQL greaterThan(SObjectField field, Datetime value) {
+		return greaterThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThan(String field, Datetime value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' > ';
+		query += value.formatGMT('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
+
+		return this;
+	}
+
+	public SmartSOQL lessThan(SObjectField field, Double value) {
+		return lessThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThan(String field, Double value) {
+		return lessThan(field, (Decimal)value);
+	}
+
+	public SmartSOQL lessThan(SObjectField field, Decimal value) {
+		return lessThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThan(String field, Decimal value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' < ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL lessThan(SObjectField field, Integer value) {
+		return lessThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThan(String field, Integer value) {
+		return lessThan(field, (Long)value);
+	}
+
+	public SmartSOQL lessThan(SObjectField field, Long value) {
+		return lessThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThan(String field, Long value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' < ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL lessThan(SObjectField field, Date value) {
+		return lessThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThan(String field, Date value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' < ';
+		query += ((Datetime)value).formatGMT('yyyy-MM-dd');
+
+		return this;
+	}
+
+	public SmartSOQL lessThan(SObjectField field, Datetime value) {
+		return greaterThan(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThan(String field, Datetime value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' < ';
+		query += value.formatGMT('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
+
+		return this;
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Double value) {
+		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(String field, Double value) {
+		return greaterThanOrEqualTo(field, (Decimal)value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Decimal value) {
+		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(String field, Decimal value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' >= ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Integer value) {
+		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(String field, Integer value) {
+		return greaterThanOrEqualTo(field, (Long)value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Long value) {
+		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(String field, Long value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' >= ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Date value) {
+		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(String field, Date value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' >= ';
+		query += ((Datetime)value).formatGMT('yyyy-MM-dd');
+
+		return this;
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Datetime value) {
+		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(String field, Datetime value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' >= ';
+		query += value.formatGMT('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
+
+		return this;
+	}
+
+	public SmartSOQL lessThanOrEqualTo(SObjectField field, Double value) {
+		return lessThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThanOrEqualTo(String field, Double value) {
+		return lessThanOrEqualTo(field, (Decimal)value);
+	}
+
+	public SmartSOQL lessThanOrEqualTo(SObjectField field, Decimal value) {
+		return lessThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThanOrEqualTo(String field, Decimal value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' <= ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL lessThanOrEqualTo(SObjectField field, Integer value) {
+		return lessThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThanOrEqualTo(String field, Integer value) {
+		return lessThanOrEqualTo(field, (Long)value);
+	}
+
+	public SmartSOQL lessThanOrEqualTo(SObjectField field, Long value) {
+		return lessThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThanOrEqualTo(String field, Long value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' <= ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL lessThanOrEqualTo(SObjectField field, Date value) {
+		return lessThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThanOrEqualTo(String field, Date value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' <= ';
+		query += ((Datetime)value).formatGMT('yyyy-MM-dd');
+
+		return this;
+	}
+
+	public SmartSOQL lessThanOrEqualTo(SObjectField field, Datetime value) {
+		return lessThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL lessThanOrEqualTo(String field, Datetime value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' <= ';
+		query += value.formatGMT('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
+
+		return this;
 	}
 
 	public SmartSOQL contains(SObjectField field, String value) {
@@ -552,7 +806,13 @@ public class SmartSOQL {
 
 		return this;
 	}
-	
+
+	public SmartSOQL withNot() {
+		query += ' NOT';
+
+		return this;
+	}
+
 	public SmartSOQL withDeletedRows() {
 		query += ' ALL ROWS';
 
