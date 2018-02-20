@@ -151,14 +151,16 @@ public class SmartSOQL {
 	}
 
 	public SmartSOQL withOr() {
-		if (!query.endsWithIgnoreCase('AND') && !query.endsWithIgnoreCase('OR') && !query.endsWithIgnoreCase('('))
+		if (!query.endsWithIgnoreCase('AND') && !query.endsWithIgnoreCase('OR') && !query.endsWithIgnoreCase('(')
+				&& !query.endsWithIgnoreCase('NOT'))
 			query += ' OR';
 
 		return this;
 	}
 
 	public SmartSOQL withAnd() {
-		if (!query.endsWithIgnoreCase('AND') && !query.endsWithIgnoreCase('OR') && !query.endsWithIgnoreCase('('))
+		if (!query.endsWithIgnoreCase('AND') && !query.endsWithIgnoreCase('OR') && !query.endsWithIgnoreCase('(')
+				&& !query.endsWithIgnoreCase('NOT'))
 			query += ' AND';
 
 		return this;
@@ -314,7 +316,7 @@ public class SmartSOQL {
 	}
 
 	public SmartSOQL notEqualTo(SObjectField field, Datetime value) {
-		return equalTo(field.getDescribe().getName(), value);
+		return notEqualTo(field.getDescribe().getName(), value);
 	}
 
 	public SmartSOQL notEqualTo(String field, Datetime value) {
@@ -327,7 +329,7 @@ public class SmartSOQL {
 	}
 
 	public SmartSOQL notEqualTo(SObjectField field, Date value) {
-		return equalTo(field.getDescribe().getName(), value);
+		return notEqualTo(field.getDescribe().getName(), value);
 	}
 
 	public SmartSOQL notEqualTo(String field, Date value) {
@@ -460,15 +462,15 @@ public class SmartSOQL {
 	}
 
 	public SmartSOQL greaterThan(SObjectField field, Double value) {
-		return greaterThan(field.getDescribe().getName(), (Decimal)value);
-	}
-
-	public SmartSOQL greaterThan(SObjectField field, Decimal value) {
 		return greaterThan(field.getDescribe().getName(), value);
 	}
 
 	public SmartSOQL greaterThan(String field, Double value) {
 		return greaterThan(field, (Decimal)value);
+	}
+
+	public SmartSOQL greaterThan(SObjectField field, Decimal value) {
+		return greaterThan(field.getDescribe().getName(), value);
 	}
 
 	public SmartSOQL greaterThan(String field, Decimal value) {
@@ -595,27 +597,6 @@ public class SmartSOQL {
 		return this;
 	}
 
-	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Double value) {
-		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
-	}
-
-	public SmartSOQL greaterThanOrEqualTo(String field, Double value) {
-		return greaterThanOrEqualTo(field, (Decimal)value);
-	}
-
-	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Decimal value) {
-		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
-	}
-
-	public SmartSOQL greaterThanOrEqualTo(String field, Decimal value) {
-		checkWhereAndJunction();
-		query += ' ' + field;
-		query += ' >= ';
-		query += value;
-
-		return this;
-	}
-
 	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Integer value) {
 		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
 	}
@@ -629,6 +610,27 @@ public class SmartSOQL {
 	}
 
 	public SmartSOQL greaterThanOrEqualTo(String field, Long value) {
+		checkWhereAndJunction();
+		query += ' ' + field;
+		query += ' >= ';
+		query += value;
+
+		return this;
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Double value) {
+		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(String field, Double value) {
+		return greaterThanOrEqualTo(field, (Decimal)value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(SObjectField field, Decimal value) {
+		return greaterThanOrEqualTo(field.getDescribe().getName(), value);
+	}
+
+	public SmartSOQL greaterThanOrEqualTo(String field, Decimal value) {
 		checkWhereAndJunction();
 		query += ' ' + field;
 		query += ' >= ';
@@ -836,8 +838,8 @@ public class SmartSOQL {
 	private void checkWhereAndJunction() {
 		if (!query.contains('WHERE'))
 			query += ' WHERE';
-		else if (!query.endsWithIgnoreCase('AND') && !query.endsWithIgnoreCase('OR') && !query.endsWithIgnoreCase('('))
-			query += ' AND';
+		else
+			withAnd();
 	}
 
 	public ENUM ORDERBY {
