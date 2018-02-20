@@ -205,7 +205,6 @@ public class SmartSOQLTest {
 		system.assertEquals(query.size(), [SELECT Count() FROM Profile WHERE UserType = 'Standard' LIMIT 5]);
 	}
 
-
 	@IsTest
 	static void withDoubleWhereString() {
 		List<sObject> query = new SmartSOQL()
@@ -547,8 +546,22 @@ public class SmartSOQLTest {
 	}
 
 	@IsTest
-	static void greaterThanOrEqualTo() {
+	static void greaterThanOrEqualToInteger() {
 		Integer startValue = 0;
+
+		List<sObject> query = new SmartSOQL()
+				.fromObject(AppMenuItem.sObjectType)
+				.withFields(new SObjectField[] {AppMenuItem.Id,
+												AppMenuItem.Name})
+				.greaterThanOrEqualTo(AppMenuItem.SortOrder, startValue)
+				.findAll();
+
+		system.assert(query.size() > 0);
+	}
+
+	@IsTest
+	static void greaterThanOrEqualToLong() {
+		Long startValue = 0;
 
 		List<sObject> query = new SmartSOQL()
 				.fromObject(AppMenuItem.sObjectType)
@@ -558,5 +571,222 @@ public class SmartSOQLTest {
 				.findAll();
 
 		system.assert(query.size() > 0);
+	}
+
+	@IsTest
+	static void withNot() {
+		List<sObject> query = new SmartSOQL()
+				.fromObject(Profile.sObjectType)
+				.withFields(new SObjectField[] {Profile.Id,
+												Profile.Name})
+				.beginGroup()
+				.withNot()
+				.contains(Profile.UserType, 'tandar')
+				.endGroup()
+				.findAll();
+
+		system.assertEquals(query.size(), [SELECT Count() FROM Profile WHERE (NOT UserType LIKE '%tandar%')]);
+	}
+
+	@IsTest
+	static void notEqualToDatetime() {
+		Datetime value = Datetime.now();
+
+		List<Profile> result = new SmartSOQL()
+				.fromObject(Profile.sObjectType)
+				.withFields(new SObjectField[] {Profile.Id,
+		                                        Profile.Name})
+				.notEqualTo(Profile.CreatedDate, value)
+				.findAll();
+
+		system.assertEquals(result.size(), [SELECT COUNT() FROM Profile WHERE CreatedDate != :value]);
+	}
+
+	@IsTest
+	static void notEqualToDate() {
+		Date value = Date.today();
+
+		List<Contact> result = new SmartSOQL()
+				.fromObject(Contact.sObjectType)
+				.withFields(new SObjectField[] {Contact.Id,
+		                                        Contact.Name})
+				.notEqualTo(Contact.Birthdate, value)
+				.withDeletedRows()
+				.findAll();
+
+		system.assertEquals(result.size(), [SELECT COUNT() FROM Contact WHERE Birthdate != :value ALL ROWS]);
+	}
+
+	@IsTest
+	static void notEqualToInteger() {
+		Integer intValue = 1;
+		List<sObject> query = new SmartSOQL()
+				.fromObject(AppMenuItem.sObjectType)
+				.withFields(new SObjectField[] {AppMenuItem.Id,
+		                                        AppMenuItem.Name})
+				.notEqualTo(AppMenuItem.SortOrder, intValue)
+				.findAll();
+
+		system.assert(query.size() > 0);
+	}
+
+	@IsTest
+	static void notEqualToLong() {
+		Long intValue = 1;
+		List<sObject> query = new SmartSOQL()
+				.fromObject(AppMenuItem.sObjectType)
+				.withFields(new SObjectField[] {AppMenuItem.Id,
+		                                        AppMenuItem.Name})
+				.notEqualTo(AppMenuItem.SortOrder, intValue)
+				.findAll();
+
+		system.assert(query.size() > 0);
+	}
+
+	@IsTest
+	static void notEqualToDecimal() {
+		Decimal startValue = 0.0;
+
+		List<sObject> query = new SmartSOQL()
+				.fromObject(EmailTemplate.sObjectType)
+				.withFields(new SObjectField[] {EmailTemplate.Id,
+		                                        EmailTemplate.Name})
+				.notEqualTo(EmailTemplate.ApiVersion, startValue)
+				.findAll();
+
+		system.assertEquals(query.size(), [SELECT Count() FROM EmailTemplate WHERE ApiVersion != :startValue]);
+	}
+
+	@IsTest
+	static void notEqualToDouble() {
+		Double startValue = 0.0;
+
+		List<sObject> query = new SmartSOQL()
+				.fromObject(EmailTemplate.sObjectType)
+				.withFields(new SObjectField[] {EmailTemplate.Id,
+		                                        EmailTemplate.Name})
+				.notEqualTo(EmailTemplate.ApiVersion, startValue)
+				.findAll();
+
+		system.assertEquals(query.size(), [SELECT Count() FROM EmailTemplate WHERE ApiVersion != :startValue]);
+	}
+
+
+	@IsTest
+	static void betweenDatetime() {
+		Datetime value = Datetime.now();
+		Datetime endDate = Datetime.now().addDays(30);
+
+		List<Profile> result = new SmartSOQL()
+				.fromObject(Profile.sObjectType)
+				.withFields(new SObjectField[] {Profile.Id,
+		                                        Profile.Name})
+				.between(Profile.CreatedDate, value, endDate)
+				.findAll();
+
+		system.assertEquals(result.size(),
+				[SELECT COUNT() FROM Profile WHERE CreatedDate >= :value AND CreatedDate <= :endDate]);
+	}
+
+	@IsTest
+	static void betweenDate() {
+		Date value = Date.today();
+		Date endDate = Date.today().addDays(30);
+
+		List<Contact> result = new SmartSOQL()
+				.fromObject(Contact.sObjectType)
+				.withFields(new SObjectField[] {Contact.Id,
+		                                        Contact.Name})
+				.between(Contact.Birthdate, value, endDate)
+				.findAll();
+
+		system.assertEquals(result.size(),
+				[SELECT COUNT() FROM Contact WHERE Birthdate >=:value AND Birthdate <= :endDate]);
+	}
+
+	@IsTest
+	static void greaterThanDouble() {
+		Double startValue = 0.0;
+
+		List<sObject> query = new SmartSOQL()
+				.fromObject(EmailTemplate.sObjectType)
+				.withFields(new SObjectField[] {EmailTemplate.Id,
+		                                        EmailTemplate.Name})
+				.greaterThan(EmailTemplate.ApiVersion, startValue)
+				.findAll();
+
+		system.assertEquals(query.size(), [SELECT Count() FROM EmailTemplate WHERE ApiVersion > :startValue]);
+	}
+
+	@IsTest
+	static void greaterThanDecimal() {
+		Decimal startValue = 0.0;
+
+		List<sObject> query = new SmartSOQL()
+				.fromObject(EmailTemplate.sObjectType)
+				.withFields(new SObjectField[] {EmailTemplate.Id,
+		                                        EmailTemplate.Name})
+				.greaterThan(EmailTemplate.ApiVersion, startValue)
+				.findAll();
+
+		system.assertEquals(query.size(), [SELECT Count() FROM EmailTemplate WHERE ApiVersion > :startValue]);
+	}
+
+	@IsTest
+	static void greaterThanInteger() {
+		Integer startValue = 0;
+
+		List<sObject> query = new SmartSOQL()
+				.fromObject(AppMenuItem.sObjectType)
+				.withFields(new SObjectField[] {AppMenuItem.Id,
+		                                        AppMenuItem.Name})
+				.greaterThan(AppMenuItem.SortOrder, startValue)
+				.findAll();
+
+		system.assert(query.size() > 0);
+	}
+
+	@IsTest
+	static void greaterThanLong() {
+		Long startValue = 0;
+
+		List<sObject> query = new SmartSOQL()
+				.fromObject(AppMenuItem.sObjectType)
+				.withFields(new SObjectField[] {AppMenuItem.Id,
+		                                        AppMenuItem.Name})
+				.greaterThan(AppMenuItem.SortOrder, startValue)
+				.findAll();
+
+		system.assert(query.size() > 0);
+	}
+
+	@IsTest
+	static void greaterThanDatetime() {
+		Datetime value = Datetime.now();
+
+		List<Profile> result = new SmartSOQL()
+				.fromObject(Profile.sObjectType)
+				.withFields(new SObjectField[] {Profile.Id,
+		                                        Profile.Name})
+				.greaterThan(Profile.CreatedDate, value)
+				.findAll();
+
+		system.assertEquals(result.size(),
+				[SELECT COUNT() FROM Profile WHERE CreatedDate > :value]);
+	}
+
+	@IsTest
+	static void greaterThanDate() {
+		Date value = Date.today();
+
+		List<Contact> result = new SmartSOQL()
+				.fromObject(Contact.sObjectType)
+				.withFields(new SObjectField[] {Contact.Id,
+		                                        Contact.Name})
+				.greaterThan(Contact.Birthdate, value)
+				.findAll();
+
+		system.assertEquals(result.size(),
+				[SELECT COUNT() FROM Contact WHERE Birthdate > :value]);
 	}
 }
